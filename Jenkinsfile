@@ -1,5 +1,4 @@
 #!/usr/bin/env groovy
-
 pipeline {
     agent any
     environment {
@@ -7,7 +6,6 @@ pipeline {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
-
     stages {
         stage("Create EKS Cluster") {
             steps {
@@ -19,14 +17,13 @@ pipeline {
                 }
             }
         }
-
         stage("Deploy to EKS") {
             steps {
                 script {
                     dir ('kubernetes'){
                         sh "aws eks update-kubeconfig --name my-eks-cluster"
                         sh "kubectl apply -f nginx-deployment.yaml"
-                        sh "kubernetes apply -f nginx-service.yaml"
+                        sh "kubectl apply -f nginx-service.yaml"
                     }
                 }
             }
